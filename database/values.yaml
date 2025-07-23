@@ -1,0 +1,22 @@
+image:
+  repository: postgres
+  tag: "15"
+  pullPolicy: IfNotPresent
+
+postgresql:
+  username: admin
+  password: admin
+  database: class_schedule
+
+service:
+  type: ClusterIP
+  port: 5432
+
+persistence:
+  enabled: true
+  size: 1Gi
+  storageClass: ""
+
+initdb:
+  enabled: true
+  dumpFile: init.sql

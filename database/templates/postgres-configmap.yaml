@@ -1,0 +1,10 @@
+{{- if .Values.initdb.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "class-schedule-postgres.fullname" . }}-initdb
+data:
+  {{ .Values.initdb.dumpFile }}: |
+    -- Example initialization SQL
+    CREATE TABLE IF NOT EXISTS test_table (id SERIAL PRIMARY KEY, name VARCHAR(255));
+{{- end }}
