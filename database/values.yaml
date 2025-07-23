@@ -1,22 +1,19 @@
+replicaCount: 1
+
 image:
   repository: postgres
   tag: "15"
-  pullPolicy: IfNotPresent
 
-postgresql:
-  username: admin
+postgres:
+  db: class_schedule
+  user: admin
   password: admin
-  database: class_schedule
+
+persistence:
+  enabled: true
+  accessMode: ReadWriteOnce
+  size: 1Gi
 
 service:
   type: ClusterIP
   port: 5432
-
-persistence:
-  enabled: true
-  size: 1Gi
-  storageClass: ""
-
-initdb:
-  enabled: true
-  dumpFile: init.sql

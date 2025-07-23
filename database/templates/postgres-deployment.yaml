@@ -1,30 +1,40 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "class-schedule-postgres.fullname" . }}
+  name: {{ .Release.Name }}-postgres
+  labels:
+    app: postgres
 spec:
-  replicas: 1
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ include "class-schedule-postgres.name" . }}
+      app: postgres
   template:
     metadata:
       labels:
-        app: {{ include "class-schedule-postgres.name" . }}
+        app: postgres
     spec:
       containers:
         - name: postgres
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          ports:
-            - containerPort: 5432
           env:
             - name: POSTGRES_DB
-              value: {{ .Values.postgresql.database }}
+              value: {{ .Values.postgres.db | quote }}
             - name: POSTGRES_USER
-              value: {{ .Values.postgresql.username }}
+              value: {{ .Values.postgres.user | quote }}
             - name: POSTGRES_PASSWORD
-              value: {{ .Values.postgresql.password }}
+              value: {{ .Values.postgres.password | quote }}
+          ports:
+            - containerPort: 5432
           volumeMounts:
-            - name: postgres-storage
+            - name: postgres-data
               mountPath: /var/lib/postgresql/data
-            {{- if .Values.initdb.enabled }}
+            - name: init-sql
+              mountPath: /docker-entrypoint-initdb.d
+      volumes:
+        - name: postgres-data
+          persistentVolumeClaim:
+            claimName: postgres-pvc
+        - name: init-sql
+          configMap:
+            name: {{ .Release.Name }}-initdb
