@@ -1,19 +1,19 @@
-replicaCount: 1
+replicaCount: VALUE
 
 image:
-  repository: postgres
-  tag: "15"
+  repository: VALUE
+  tag: VALUE
 
 postgres:
-  db: class_schedule
-  user: admin
-  password: admin
+  db: VALUE
+  user: VALUE
+  password: VALUE
 
 persistence:
   enabled: true
-  accessMode: ReadWriteOnce
-  size: 1Gi
+  accessMode: VALUE
+  size: VALUE
 
 service:
-  type: ClusterIP
-  port: 5432
+  type: VALUE
+  port: VALUE
